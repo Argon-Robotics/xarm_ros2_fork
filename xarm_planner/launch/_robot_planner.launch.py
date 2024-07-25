@@ -16,6 +16,8 @@ from launch.actions import OpaqueFunction
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.actions import ComposableNodeContainer
+from launch_ros.descriptions import ComposableNode
 
 
 def launch_setup(context, *args, **kwargs):
@@ -117,6 +119,14 @@ def launch_setup(context, *args, **kwargs):
     except:
         xarm_planner_parameters = {}
 
+        # Servo parameters
+    load_yaml = getattr(mod, 'load_yaml')
+    servo_yaml = load_yaml('xarm_moveit_servo', "config/xarm_moveit_servo_config.yaml")
+    servo_yaml['move_group_name'] = xarm_type
+    xarm_traj_controller = '{}{}_traj_controller'.format(prefix.perform(context), xarm_type)
+    servo_yaml['command_out_topic'] = '/{}/joint_trajectory'.format(xarm_traj_controller)
+    servo_params = {"moveit_servo": servo_yaml}
+
     xarm_planner_node = Node(
         name=node_name,
         package='xarm_planner',
@@ -149,6 +159,62 @@ def launch_setup(context, *args, **kwargs):
             ],
         )
         nodes.append(xarm_gripper_planner_node)
+
+        # Add the Servo components
+    container = ComposableNodeContainer(
+        name='xarm_moveit_servo_container',
+        namespace='/',
+        package='rclcpp_components',
+        executable='component_container',
+        composable_node_descriptions=[
+            ComposableNode(
+                package='robot_state_publisher',
+                plugin='robot_state_publisher::RobotStatePublisher',
+                name='robot_state_publisher',
+                parameters=[robot_description_parameters],
+            ),
+            ComposableNode(
+                package='tf2_ros',
+                plugin='tf2_ros::StaticTransformBroadcasterNode',
+                name='static_tf2_broadcaster',
+                parameters=[{'child_frame_id': 'link_base', 'frame_id': 'world'}],
+            ),
+            ComposableNode(
+                package='moveit_servo',
+                plugin='moveit_servo::ServoNode',
+                name='servo_server',
+                parameters=[
+                    servo_params,
+                    robot_description_parameters,
+                ],
+            ),
+            ComposableNode(
+                package='xarm_moveit_servo',
+                plugin='xarm_moveit_servo::JoyToServoPub',
+                name='joy_to_servo_node',
+                parameters=[
+                    servo_params,
+                    {
+                        'dof': dof, 
+                        'ros_queue_size': 10,
+                        'joystick_type': LaunchConfiguration('joystick_type', default=1),
+                    },
+                ],
+            ),
+            ComposableNode(
+                package='joy',
+                plugin='joy::Joy',
+                name='joy_node',
+                parameters=[
+                    # {'autorepeat_rate': 50.0},
+                ],
+            ),
+        ],
+        output='screen',
+    )
+
+    nodes.append(container)
+
     return nodes
 
 
