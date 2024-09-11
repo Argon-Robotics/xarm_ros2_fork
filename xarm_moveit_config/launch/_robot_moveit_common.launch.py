@@ -41,6 +41,7 @@ def launch_setup(context, *args, **kwargs):
     model1300 = LaunchConfiguration('model1300', default=False)
 
     attach_to = LaunchConfiguration('attach_to', default='world')
+    # This is how you cam lift the robot off the floor
     attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
     attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
 

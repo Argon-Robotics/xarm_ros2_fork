@@ -70,8 +70,8 @@ ufactory_driver:
       set_cartesian_velo_continuous: false
       set_allow_approx_motion: false
       set_only_check_type: false
-      config_tgpio_reset_when_stop: false
-      config_cgpio_reset_when_stop: false
+      config_tgpio_reset_when_stop: true
+      config_cgpio_reset_when_stop: true
       motion_enable: true
       set_servo_attach: false
       set_servo_detach: false

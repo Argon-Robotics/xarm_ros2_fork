@@ -45,7 +45,7 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Acceleration_Scaling_Factor: 0.1
+    - Acceleration_Scaling_Factor: 0.3
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Move Group Namespace: ""
@@ -115,12 +115,12 @@ Visualization Manager:
             Value: true
           link_base:
             Alpha: 1
-            Show Axes: false
+            Show Axes: true
             Show Trail: false
             Value: true
           link_eef:
             Alpha: 1
-            Show Axes: false
+            Show Axes: true
             Show Trail: false
           world:
             Alpha: 1
@@ -146,7 +146,7 @@ Visualization Manager:
         Colliding Link Color: 255; 0; 0
         Goal State Alpha: 1
         Goal State Color: 250; 128; 0
-        Interactive Marker Size: 0
+        Interactive Marker Size: 0.3
         Joint Violation Color: 255; 0; 255
         Planning Group: xarm7
         Query Goal State: false
@@ -223,7 +223,7 @@ Visualization Manager:
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
-      Velocity_Scaling_Factor: 0.1
+      Velocity_Scaling_Factor: 0.3
     - Alpha: 1
       Class: rviz_default_plugins/RobotModel
       Collision Enabled: false
@@ -294,7 +294,7 @@ Visualization Manager:
       TF Prefix: ""
       Update Interval: 0
       Value: true
-      Visual Enabled: true
+      Visual Enabled: false
     - Class: rviz_default_plugins/MarkerArray
       Enabled: true
       Name: MarkerArray
