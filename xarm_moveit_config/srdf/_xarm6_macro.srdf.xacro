@@ -39,13 +39,14 @@
       </xacro:if>
     </group>
     <!-- GROUP STATES, Purpose, Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms' -->
+    <!-- Define the home state for the xarm6 robot -->
     <group_state name="home" group="${prefix}xarm6">
-      <joint name="${prefix}joint1" value="-0.096" />
-      <joint name="${prefix}joint2" value="-0.134" />
-      <joint name="${prefix}joint3" value="-2.325" />
-      <joint name="${prefix}joint4" value="0.086" />
-      <joint name="${prefix}joint5" value="0.756" />
-      <joint name="${prefix}joint6" value="0" />
+      <joint name="${prefix}joint1" value="-0.05" />
+      <joint name="${prefix}joint2" value="-0.1972" />
+      <joint name="${prefix}joint3" value="-0.2252" />
+      <joint name="${prefix}joint4" value="3.101" />
+      <joint name="${prefix}joint5" value="1.148" />
+      <joint name="${prefix}joint6" value="-3.107" />
     </group_state>
     <group_state name="hold-up" group="${prefix}xarm6">
       <joint name="${prefix}joint1" value="0" />

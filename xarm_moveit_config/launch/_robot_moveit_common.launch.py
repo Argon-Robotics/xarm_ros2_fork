@@ -42,7 +42,7 @@ def launch_setup(context, *args, **kwargs):
 
     attach_to = LaunchConfiguration('attach_to', default='world')
     # This is how you cam lift the robot off the floor
-    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
     attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
 
     add_other_geometry = LaunchConfiguration('add_other_geometry', default=False)
@@ -264,6 +264,7 @@ def launch_setup(context, *args, **kwargs):
         name='rviz2',
         output='screen',
         arguments=['-d', rviz_config_file],
+                #    '--ros-args', '--log-level', 'debug'],  # Added this line to set the log level to debug],
         parameters=[
             robot_description_parameters,
             ompl_planning_pipeline_config,
@@ -279,16 +280,16 @@ def launch_setup(context, *args, **kwargs):
     rpy = attach_rpy.perform(context)[1:-1].split(' ')
     args = xyz + rpy + ['world', '{}link_base'.format(prefix.perform(context))]
 
-    # Static TF
-    static_tf = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='static_transform_publisher',
-        output='screen',
-        # arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'world', 'link_base'],
-        arguments=args,
-        parameters=[{'use_sim_time': use_sim_time}],
-    )
+    # # Static TF
+    # static_tf = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='static_transform_publisher',
+    #     output='screen',
+    #     # arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'world', 'link_base'],
+    #     arguments=args,
+    #     parameters=[{'use_sim_time': use_sim_time}],
+    # )
 
     return [
         RegisterEventHandler(event_handler=OnProcessExit(
@@ -296,7 +297,7 @@ def launch_setup(context, *args, **kwargs):
             on_exit=[EmitEvent(event=Shutdown())]
         )),
         rviz2_node,
-        static_tf,
+        # static_tf,
         move_group_node,
     ]
 

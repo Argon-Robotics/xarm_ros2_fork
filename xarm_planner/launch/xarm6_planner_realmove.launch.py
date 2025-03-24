@@ -14,7 +14,7 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    robot_ip = LaunchConfiguration('robot_ip')
+    robot_ip = LaunchConfiguration('robot_ip', default='192.168.68.236')
     report_type = LaunchConfiguration('report_type', default='normal')
     prefix = LaunchConfiguration('prefix', default='')
     hw_ns = LaunchConfiguration('hw_ns', default='xarm')
@@ -27,17 +27,17 @@ def generate_launch_description():
     add_realsense_d435i = LaunchConfiguration('add_realsense_d435i', default=False)
     model1300 = LaunchConfiguration('model1300', default=False)
 
-    add_other_geometry = LaunchConfiguration('add_other_geometry', default=False)
-    geometry_type = LaunchConfiguration('geometry_type', default='box')
+    add_other_geometry = LaunchConfiguration('add_other_geometry', default=True)
+    geometry_type = LaunchConfiguration('geometry_type', default='mesh')
     geometry_mass = LaunchConfiguration('geometry_mass', default=0.1)
     geometry_height = LaunchConfiguration('geometry_height', default=0.1)
     geometry_radius = LaunchConfiguration('geometry_radius', default=0.1)
     geometry_length = LaunchConfiguration('geometry_length', default=0.1)
     geometry_width = LaunchConfiguration('geometry_width', default=0.1)
-    geometry_mesh_filename = LaunchConfiguration('geometry_mesh_filename', default='')
-    geometry_mesh_origin_xyz = LaunchConfiguration('geometry_mesh_origin_xyz', default='"0 0 0"')
-    geometry_mesh_origin_rpy = LaunchConfiguration('geometry_mesh_origin_rpy', default='"0 0 0"')
-    geometry_mesh_tcp_xyz = LaunchConfiguration('geometry_mesh_tcp_xyz', default='"0 0 0"')
+    geometry_mesh_filename = LaunchConfiguration('geometry_mesh_filename', default='weld_assy_new_gooseneck.stl')
+    geometry_mesh_origin_xyz = LaunchConfiguration('geometry_mesh_origin_xyz', default='"0.0 0.0 -0.02"')
+    geometry_mesh_origin_rpy = LaunchConfiguration('geometry_mesh_origin_rpy', default='"1.57079 0 -1.57079"')
+    geometry_mesh_tcp_xyz = LaunchConfiguration('geometry_mesh_tcp_xyz', default='"0.0 0.0 0.371"')
     geometry_mesh_tcp_rpy = LaunchConfiguration('geometry_mesh_tcp_rpy', default='"0 0 0"')
 
     baud_checkset = LaunchConfiguration('baud_checkset', default=True)
@@ -79,6 +79,7 @@ def generate_launch_description():
             'geometry_mesh_tcp_rpy': geometry_mesh_tcp_rpy,
             'baud_checkset': baud_checkset,
             'default_gripper_baud': default_gripper_baud,
+            # 'log_level': 'debug'
         }.items(),
     )
 
