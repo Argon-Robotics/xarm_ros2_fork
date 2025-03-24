@@ -27,7 +27,7 @@ def launch_setup(context, *args, **kwargs):
     hw_ns = LaunchConfiguration('hw_ns', default='xarm')
     limited = LaunchConfiguration('limited', default=True)
     attach_to = LaunchConfiguration('attach_to', default='base_link')
-    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
     attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
    
     add_gripper = LaunchConfiguration('add_gripper', default=False)

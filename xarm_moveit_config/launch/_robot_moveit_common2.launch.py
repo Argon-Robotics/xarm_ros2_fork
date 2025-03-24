@@ -23,7 +23,7 @@ from launch.events import Shutdown
 def launch_setup(context, *args, **kwargs):
     prefix = LaunchConfiguration('prefix', default='')
     attach_to = LaunchConfiguration('attach_to', default='world')
-    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
     attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
     no_gui_ctrl = LaunchConfiguration('no_gui_ctrl', default=False)
     show_rviz = LaunchConfiguration('show_rviz', default=True)
@@ -75,14 +75,14 @@ def launch_setup(context, *args, **kwargs):
     args = xyz + rpy + [attach_to.perform(context), '{}link_base'.format(prefix.perform(context))]
 
     # Static TF
-    static_tf = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='static_transform_publisher',
-        output='screen',
-        arguments=args,
-        parameters=[{'use_sim_time': use_sim_time}],
-    )
+    # static_tf = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='static_transform_publisher',
+    #     output='screen',
+    #     arguments=args,
+    #     parameters=[{'use_sim_time': use_sim_time}],
+    # )
 
     robot_planner_node_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([FindPackageShare('xarm_planner'), 'launch', '_robot_planner.launch.py'])),
@@ -98,7 +98,7 @@ def launch_setup(context, *args, **kwargs):
             on_exit=[EmitEvent(event=Shutdown())]
         )),
         rviz2_node,
-        static_tf,
+        # static_tf,
         move_group_node,
         robot_planner_node_launch
     ]

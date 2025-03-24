@@ -14,7 +14,7 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    robot_ip = LaunchConfiguration('robot_ip')
+    robot_ip = LaunchConfiguration('robot_ip', default='192.168.68.236')
     hw_ns = LaunchConfiguration('hw_ns', default='xarm')
     
     # robot moveit realmove launch

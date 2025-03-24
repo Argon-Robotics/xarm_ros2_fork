@@ -13,7 +13,9 @@ from launch.actions import OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from uf_ros_lib.moveit_configs_builder import MoveItConfigsBuilder
+import os
 
+os.environ['PYTHONUNBUFFERED'] = '1'
 
 def launch_setup(context, *args, **kwargs):
     dof = LaunchConfiguration('dof', default=7)
@@ -26,7 +28,7 @@ def launch_setup(context, *args, **kwargs):
     model1300 = LaunchConfiguration('model1300', default=False)
     robot_sn = LaunchConfiguration('robot_sn', default='')
     attach_to = LaunchConfiguration('attach_to', default='world')
-    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
     attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
     mesh_suffix = LaunchConfiguration('mesh_suffix', default='stl')
     kinematics_suffix = LaunchConfiguration('kinematics_suffix', default='')
@@ -109,6 +111,9 @@ def launch_setup(context, *args, **kwargs):
     except:
         xarm_planner_parameters = {}
 
+    print("##################################################")
+    print("Creating xarm_planner_node...")
+
     xarm_planner_node = Node(
         name=node_name,
         package='xarm_planner',
@@ -124,6 +129,8 @@ def launch_setup(context, *args, **kwargs):
             xarm_planner_parameters,
         ],
     )
+    print("##################################################")
+    print("xarm_planner_node created")
 
     nodes = [
         xarm_planner_node

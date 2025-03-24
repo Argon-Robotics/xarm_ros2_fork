@@ -41,7 +41,7 @@ def launch_setup(context, *args, **kwargs):
     model1300 = LaunchConfiguration('model1300', default=False)
 
     attach_to = LaunchConfiguration('attach_to', default='world')
-    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
     attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
 
     add_other_geometry = LaunchConfiguration('add_other_geometry', default=False)
@@ -184,7 +184,7 @@ def launch_setup(context, *args, **kwargs):
     else:
         ompl_planning_pipeline_config['ompl'] = {
             'planning_plugin': 'ompl_interface/OMPLPlanner',
-            'request_adapters': """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
+            'request_adapters': """default_planner_request_adapters/AddRuckigTrajectorySmoothing default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
             'start_state_max_bounds_error': 0.1,
         }
     ompl_planning_pipeline_config['ompl'].update(ompl_planning_yaml)
@@ -279,15 +279,15 @@ def launch_setup(context, *args, **kwargs):
     args = xyz + rpy + [attach_to.perform(context), '{}link_base'.format(prefix.perform(context))]
 
     # Static TF
-    static_tf = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='static_transform_publisher',
-        output='screen',
-        # arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'world', 'link_base'],
-        arguments=args,
-        parameters=[{'use_sim_time': use_sim_time}],
-    )
+    # static_tf = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='static_transform_publisher',
+    #     output='screen',
+    #     # arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'world', 'link_base'],
+    #     arguments=args,
+    #     parameters=[{'use_sim_time': use_sim_time}],
+    # )
 
     return [
         RegisterEventHandler(event_handler=OnProcessExit(

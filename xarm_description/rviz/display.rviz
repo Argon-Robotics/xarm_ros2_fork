@@ -103,7 +103,7 @@ Visualization Manager:
           Value: true
         link_eef:
           Alpha: 1
-          Show Axes: false
+          Show Axes: true
           Show Trail: false
         world:
           Alpha: 1
