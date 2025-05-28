@@ -156,6 +156,23 @@ namespace uf_robot_hardware
         xarm_driver_.init(node_, robot_ip_, true);
         // 20250318, get joint_states msg reference from xarm_driver
         joint_state_msg_ = xarm_driver_.get_joint_states();
+
+        error_code_pub_ = hw_node_->create_publisher<std_msgs::msg::Int32MultiArray>("xarm/error_code", 10);
+
+        xarm_driver_.arm->register_error_warn_changed_callback(
+            [this](int err, int warn) {
+                std_msgs::msg::Int32MultiArray msg;
+                msg.data = {err, warn};
+                error_code_pub_->publish(msg);
+
+                if (err == 1)
+                    RCLCPP_ERROR(LOGGER, "[%s] E-STOP triggered!", robot_ip_.c_str());
+                else if (err == 2)
+                    RCLCPP_ERROR(LOGGER, "[%s] Collision detected!", robot_ip_.c_str());
+                else if (err != 0)
+                    RCLCPP_ERROR(LOGGER, "[%s] Error code: %d", robot_ip_.c_str(), err);
+            }
+        );
     }
 
     CallbackReturn UFRobotSystemHardware::on_init(const hardware_interface::HardwareInfo& info)

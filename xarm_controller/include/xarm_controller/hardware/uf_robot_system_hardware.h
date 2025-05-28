@@ -26,7 +26,7 @@
 #include "controller_manager_msgs/srv/list_controllers.hpp"
 #include "controller_manager_msgs/srv/switch_controller.hpp"
 #include "xarm_api/xarm_driver.h"
-
+#include <std_msgs/msg/int32_multi_array.hpp>
 
 namespace uf_robot_hardware
 {
@@ -104,6 +104,8 @@ namespace uf_robot_hardware
         rclcpp::Client<controller_manager_msgs::srv::SwitchController>::SharedPtr client_switch_controller_;
 
         rclcpp::Publisher<std_msgs::msg::Empty>::SharedPtr update_goal_state_pub_;
+        rclcpp::Publisher<std_msgs::msg::Int32MultiArray>::SharedPtr error_code_pub_;
+        
         std_msgs::msg::Empty update_goal_state_msg_;
 
         bool _check_cmds_is_change(float *prev, float *cur, double threshold = 0.0001);
