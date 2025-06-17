@@ -15,8 +15,8 @@
   <xacro:arg name="model1300_1" default="false"/>
   <xacro:arg name="model1300_2" default="false"/>
 
-  <xacro:arg name="dof_1" default="7"/>
-  <xacro:arg name="dof_2" default="7"/>
+  <xacro:arg name="dof_1" default="6"/>
+  <xacro:arg name="dof_2" default="6"/>
   <xacro:arg name="robot_ip_1" default=""/>
   <xacro:arg name="robot_ip_2" default=""/>
   <xacro:arg name="robot_type_1" default="xarm"/>
@@ -72,6 +72,7 @@
 
   <!-- load xarm device -->
   <xacro:include filename="$(find xarm_description)/urdf/xarm_device_macro.xacro" />
+  <xacro:include filename="$(find xarm_description)/urdf/rotary_table.urdf.xacro" />
     
   <xacro:xarm_device prefix="$(arg prefix_1)" hw_ns="$(arg hw_ns)" limited="$(arg limited)" 
     effort_control="$(arg effort_control)" velocity_control="$(arg velocity_control)"
@@ -111,5 +112,13 @@
     robot_ip="$(arg robot_ip_2)" report_type="$(arg report_type_2)"
     baud_checkset="$(arg baud_checkset_2)" default_gripper_baud="$(arg default_gripper_baud_2)"
     model1300="$(arg model1300_2)" robot_sn="$(arg robot_sn_2)" mesh_suffix="$(arg mesh_suffix)" kinematics_suffix="$(arg kinematics_suffix_2)" />
+
+    <!-- <joint name="world_to_rotary_stand" type="fixed">
+      <parent link="world"/>
+      <child link="rotary_stand"/>
+      <origin xyz="0 0.5 0" rpy="0 0 0"/>
+    </joint> -->
+
+
 
 </robot>

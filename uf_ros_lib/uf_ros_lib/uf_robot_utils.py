@@ -241,6 +241,11 @@ def generate_dual_ros2_control_params_temp_file(
     ros2_control_params_yaml.update(ros2_control_params_yaml_2)
     ros2_control_params_yaml['controller_manager']['ros__parameters'].update(ros2_control_params_yaml_1['controller_manager']['ros__parameters'])
     ros2_control_params_yaml['controller_manager']['ros__parameters'].update(ros2_control_params_yaml_2['controller_manager']['ros__parameters'])
+
+
+    
+
+
     if ros_namespace:
         ros2_control_params_yaml = {
             ros_namespace: ros2_control_params_yaml

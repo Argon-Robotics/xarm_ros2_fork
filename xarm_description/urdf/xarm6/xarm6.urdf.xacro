@@ -4,9 +4,9 @@
     joint1_lower_limit:=${-2.0*pi}  joint1_upper_limit:=${2.0*pi}
     joint2_lower_limit:=${-2.059}  joint2_upper_limit:=${2.0944}
     joint3_lower_limit:=${-3.927}  joint3_upper_limit:=${0.19198}
-    joint4_lower_limit:=${-2.0*pi}  joint4_upper_limit:=${2.0*pi}
+    joint4_lower_limit:=${-0.5*pi}  joint4_upper_limit:=${0.5*pi}
     joint5_lower_limit:=${-1.69297}  joint5_upper_limit:=${pi}
-    joint6_lower_limit:=${-2.0*pi}  joint6_upper_limit:=${2.0*pi}
+    joint6_lower_limit:=${-0.5*pi}  joint6_upper_limit:=${0.5*pi}
     model_num:=0
     inertial_params_filename:='' kinematics_params_filename:='' "
     >

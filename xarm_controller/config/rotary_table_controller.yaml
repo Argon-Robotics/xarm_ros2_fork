@@ -1,0 +1,10 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    rotary_table_controller:
+      type: position_controllers/JointPositionController
+      joint: rotary_table_joint
+
+    controller_names:
+      - rotary_table_controller

@@ -1,5 +1,6 @@
 controller_names:
   - xarm6_traj_controller
+  - rotary_table_controller
 
 xarm6_traj_controller:
   action_ns: follow_joint_trajectory
@@ -12,3 +13,10 @@ xarm6_traj_controller:
     - joint4
     - joint5
     - joint6
+
+rotary_table_controller:
+  type: FollowJointTrajectory
+  joints:
+    - rotary_table_joint
+  action_ns: follow_joint_trajectory
+  default: true
