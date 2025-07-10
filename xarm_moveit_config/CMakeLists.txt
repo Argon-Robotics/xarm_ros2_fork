@@ -37,6 +37,7 @@ install(DIRECTORY
   rviz
   srdf
   launch
+  meshes
   DESTINATION share/${PROJECT_NAME}/
 )
 

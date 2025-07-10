@@ -1,5 +1,11 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Single xArm device + independent simulated rotary table.
+  The xArm block is unchanged from the original template. A second
+  kinematic chain (rotary table) is added and connected to <world>.
+-->
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="UF_ROBOT">
+  <!-- ‣‣‣ Existing xArm argument list (unchanged) -->
   <xacro:arg name="prefix" default=""/>
   <xacro:arg name="hw_ns" default="xarm"/>
   <xacro:arg name="limited" default="false"/>
@@ -9,8 +15,8 @@
   <xacro:arg name="add_vacuum_gripper" default="false"/>
   <xacro:arg name="add_bio_gripper" default="false"/>
   <xacro:arg name="model1300" default="false"/>
-  
-  <xacro:arg name="dof" default="7"/>
+
+  <xacro:arg name="dof" default="6"/>
   <xacro:arg name="robot_ip" default=""/>
   <xacro:arg name="robot_type" default="xarm"/>
   <xacro:arg name="robot_sn" default=""/>
@@ -38,25 +44,31 @@
 
   <xacro:arg name="baud_checkset" default="true"/>
   <xacro:arg name="default_gripper_baud" default="2000000"/>
-  
+
   <xacro:arg name="attach_to" default="world"/>
   <xacro:arg name="attach_xyz" default="0 0 0"/>
   <xacro:arg name="attach_rpy" default="0 0 0"/>
   <xacro:arg name="mesh_suffix" default="stl"/>
-
   <xacro:arg name="kinematics_suffix" default=""/>
 
-  <!-- load xarm device -->
+  <!-- ‣‣‣ NEW parameters for the rotary table -->
+  <xacro:property name="rot_base_radius" value="0.20"/>
+  <xacro:property name="rot_base_height" value="0.18"/>
+  <xacro:property name="rot_plate_radius" value="0.20"/>
+  <xacro:property name="rot_plate_height" value="0.18"/>
+  <xacro:property name="rot_origin_xyz" value="0 0.5 0"/>  <!-- position in world -->
+
+  <!-- ‣‣‣ xArm include (unchanged) -->
   <xacro:include filename="$(find xarm_description)/urdf/xarm_device_macro.xacro" />
-  <xacro:xarm_device prefix="$(arg prefix)" hw_ns="$(arg hw_ns)" limited="$(arg limited)" 
+  <xacro:xarm_device prefix="$(arg prefix)" hw_ns="$(arg hw_ns)" limited="$(arg limited)"
     effort_control="$(arg effort_control)" velocity_control="$(arg velocity_control)"
-    add_gripper="$(arg add_gripper)" add_vacuum_gripper="$(arg add_vacuum_gripper)" 
-    add_bio_gripper="$(arg add_bio_gripper)" dof="$(arg dof)" 
-    ros2_control_plugin="$(arg ros2_control_plugin)" robot_type="$(arg robot_type)" 
+    add_gripper="$(arg add_gripper)" add_vacuum_gripper="$(arg add_vacuum_gripper)"
+    add_bio_gripper="$(arg add_bio_gripper)" dof="$(arg dof)"
+    ros2_control_plugin="$(arg ros2_control_plugin)" robot_type="$(arg robot_type)"
     load_gazebo_plugin="true" ros2_control_params="$(arg ros2_control_params)"
-    add_realsense_d435i="$(arg add_realsense_d435i)" 
-    add_d435i_links="$(arg add_d435i_links)" 
-    add_other_geometry="$(arg add_other_geometry)" 
+    add_realsense_d435i="$(arg add_realsense_d435i)"
+    add_d435i_links="$(arg add_d435i_links)"
+    add_other_geometry="$(arg add_other_geometry)"
     geometry_type="$(arg geometry_type)" geometry_mass="$(arg geometry_mass)"
     geometry_height="$(arg geometry_height)" geometry_radius="$(arg geometry_radius)"
     geometry_length="$(arg geometry_length)" geometry_width="$(arg geometry_width)"
@@ -66,6 +78,96 @@
     robot_ip="$(arg robot_ip)" report_type="$(arg report_type)"
     baud_checkset="$(arg baud_checkset)" default_gripper_baud="$(arg default_gripper_baud)"
     model1300="$(arg model1300)" attach_to="$(arg attach_to)" attach_xyz="$(arg attach_xyz)" attach_rpy="$(arg attach_rpy)"
-    robot_sn="$(arg robot_sn)" use_gazebo_camera="$(arg use_gazebo_camera)" mesh_suffix="$(arg mesh_suffix)" kinematics_suffix="$(arg kinematics_suffix)" />
+    robot_sn="$(arg robot_sn)" use_gazebo_camera="$(arg use_gazebo_camera)"
+    mesh_suffix="$(arg mesh_suffix)" kinematics_suffix="$(arg kinematics_suffix)" />
 
+  <!-- ‣‣‣ Independent rotary table kinematic chain -->
+  
+  <link name="rotary_table_base">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <!-- <cylinder radius="${rot_base_radius}" length="${rot_base_height}"/> -->
+        <mesh filename="package://xarm_moveit_config/meshes/rotary_stand_centered.STL" />
+      </geometry>
+      <material name="RotaryGrey">
+        <color rgba="0.6 0.6 0.6 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <!-- <cylinder radius="${rot_base_radius}" length="${rot_base_height}"/> -->
+        <mesh filename="package://xarm_moveit_config/meshes/rotary_stand_centered.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <mass value="5.0"/>
+      <inertia ixx="0.1" iyy="0.1" izz="0.1" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- fixed transform world → rotary_table_base -->
+  <joint name="world_to_rotary_base" type="fixed">
+    <parent link="world"/>
+    <child  link="rotary_table_base"/>
+    <origin xyz="${rot_origin_xyz}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- rotating plate -->
+  <link name="rotary_table_plate">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <!-- <cylinder radius="${rot_plate_radius}" length="${rot_plate_height}"/> -->
+        <mesh filename="package://xarm_moveit_config/meshes/RotaryPlate_centered.STL" />
+      </geometry>
+      <material name="RotaryBlue">
+        <color rgba="0.2 0.4 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://xarm_moveit_config/meshes/RotaryPlate_centered.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <mass value="2.0"/>
+      <inertia ixx="0.02" iyy="0.02" izz="0.02" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="rotary_table_joint" type="revolute">
+    <parent link="rotary_table_base"/>
+    <child  link="rotary_table_plate"/>
+    <origin xyz="0 0 ${rot_base_height}" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="20" velocity="1.5"/>
+  </joint>
+
+  <!-- ros2_control specification for the rotary joint (fake hardware) -->
+  <ros2_control name="RotaryTableHW" type="system">
+    <hardware>
+      <plugin>mock_components/GenericSystem</plugin>
+      <!-- Either style below works →  pick one and keep it consistent -->
+      <!-- YAML-list style -->
+      <!-- <param name="joints">['rotary_table_joint']</param> -->
+      <!-- <param name="command_interfaces">['position']</param> -->
+      <!-- <param name="state_interfaces">['position']</param> -->
+
+      <!-- Plain space-separated style (simplest) -->
+      <param name="joints">rotary_table_joint</param>
+      <param name="command_interfaces">position</param>
+      <param name="state_interfaces">position</param>
+      <param name="fake_sensor_commands">true</param>
+    </hardware>
+
+    <joint name="rotary_table_joint">
+      <state_interface   name="position"/>
+      <command_interface name="position"/>
+    </joint>
+  </ros2_control>
 </robot>

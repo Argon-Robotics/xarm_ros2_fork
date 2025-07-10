@@ -41,7 +41,8 @@ def launch_setup(context, *args, **kwargs):
     model1300 = LaunchConfiguration('model1300', default=False)
     robot_sn = LaunchConfiguration('robot_sn', default='')
     attach_to = LaunchConfiguration('attach_to', default='world')
-    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
+    # attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
     attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
 
     add_other_geometry = LaunchConfiguration('add_other_geometry', default=False)
@@ -61,7 +62,7 @@ def launch_setup(context, *args, **kwargs):
     
     robot_description = LaunchConfiguration('robot_description', default='')
     ros2_control_params = LaunchConfiguration('ros2_control_params', default='')
-
+    print ("###################\n\n\n ros2_control GOT CALLED \n\n\n###################\n\n\n")
     if not ros2_control_params.perform(context):
         # ros2 control params
         ros2_control_params = generate_ros2_control_params_temp_file(

@@ -28,7 +28,8 @@ def launch_setup(context, *args, **kwargs):
     model1300 = LaunchConfiguration('model1300', default=False)
     robot_sn = LaunchConfiguration('robot_sn', default='')
     attach_to = LaunchConfiguration('attach_to', default='world')
-    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
+    # attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0.3075"')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
     attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
     mesh_suffix = LaunchConfiguration('mesh_suffix', default='stl')
     kinematics_suffix = LaunchConfiguration('kinematics_suffix', default='')
@@ -52,6 +53,7 @@ def launch_setup(context, *args, **kwargs):
     geometry_mesh_tcp_rpy = LaunchConfiguration('geometry_mesh_tcp_rpy', default='"0 0 0"')
 
     moveit_config_dump = LaunchConfiguration('moveit_config_dump', default='')
+    print("###################\n\n\n moveit_config_dump: ", moveit_config_dump, "\n\n\n###################\n\n\n")
     moveit_config_dump = moveit_config_dump.perform(context)
     moveit_config_dict = yaml.load(moveit_config_dump, Loader=yaml.FullLoader) if moveit_config_dump else {}
 
