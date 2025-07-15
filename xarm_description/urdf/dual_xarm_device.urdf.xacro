@@ -113,12 +113,6 @@
     baud_checkset="$(arg baud_checkset_2)" default_gripper_baud="$(arg default_gripper_baud_2)"
     model1300="$(arg model1300_2)" robot_sn="$(arg robot_sn_2)" mesh_suffix="$(arg mesh_suffix)" kinematics_suffix="$(arg kinematics_suffix_2)" />
 
-    <!-- <joint name="world_to_rotary_stand" type="fixed">
-      <parent link="world"/>
-      <child link="rotary_stand"/>
-      <origin xyz="0 0.5 0" rpy="0 0 0"/>
-    </joint> -->
-
 
 
 </robot>
