@@ -7,13 +7,13 @@
     <visual>
       <origin xyz="-0.200 0.200 0" rpy="1.5708 0 0"/>
       <geometry>
-        <mesh filename="file:///home/hprtx3060/xarm_ws_humble/src/xarm_ros2_fork/xarm_moveit_config/meshes/rotary_stand_m.STL" scale="1 1 1"/>
+        <mesh filename="package://xarm_moveit_config/meshes/rotary_stand_m.STL" scale="1 1 1"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="-0.200 0.200 0" rpy="1.5708 0 0"/>
       <geometry>
-        <mesh filename="file:///home/hprtx3060/xarm_ws_humble/src/xarm_ros2_fork/xarm_moveit_config/meshes/rotary_stand_m.STL" scale="1 1 1"/>
+        <mesh filename="package://xarm_moveit_config/meshes/rotary_stand_m.STL" scale="1 1 1"/>
       </geometry>
     </collision>
   </link>
