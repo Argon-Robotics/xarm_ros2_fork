@@ -25,10 +25,10 @@
     add_gripper="$(arg add_gripper_2)" add_vacuum_gripper="$(arg add_vacuum_gripper_2)" add_bio_gripper="$(arg add_bio_gripper_2)" add_other_geometry="$(arg add_other_geometry_2)" />
 
   <!-- NEW: Add a combined group for both arms -->
-  <group name="dual_arm">
+  <!-- <group name="dual_arm">
     <chain base_link="$(arg prefix_1)link_base" tip_link="$(arg prefix_1)link6" />
     <chain base_link="$(arg prefix_2)link_base" tip_link="$(arg prefix_2)link6" />
-  </group>
+  </group> -->
 
   <!-- Optionally, you could be more explicit with joints instead of chain -->
   
