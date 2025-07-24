@@ -220,6 +220,9 @@ __Reminder 3： All following instructions will base on xArm6，please use prope
         # For xArm(xarm6 as example): set 'add_gripper=true' to attach xArm gripper model
         $ ros2 launch xarm_moveit_config xarm6_moveit_fake.launch.py [add_gripper:=true]
 
+        # xArm6 mounted on rotary table
+        $ ros2 launch xarm_moveit_config xarm6_table_moveit_fake.launch.py
+
         # For Lite6: set 'add_gripper=true' to attach Lite6 gripper model
         $ ros2 launch xarm_moveit_config lite6_moveit_fake.launch.py [add_gripper:=true]
         ```

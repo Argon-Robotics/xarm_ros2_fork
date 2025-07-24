@@ -39,11 +39,20 @@ def launch_setup(context, *args, **kwargs):
     geometry_mesh_tcp_xyz = LaunchConfiguration('geometry_mesh_tcp_xyz', default='"0 0 0"')
     geometry_mesh_tcp_rpy = LaunchConfiguration('geometry_mesh_tcp_rpy', default='"0 0 0"')
 
+    xacro_file = LaunchConfiguration('xacro_file',
+        default=PathJoinSubstitution([FindPackageShare('xarm_description'), 'urdf', 'xarm_device.urdf.xacro']))
+    xacro_urdf_file = LaunchConfiguration('xacro_urdf_file', default=xacro_file)
+    xacro_srdf_file = LaunchConfiguration('xacro_srdf_file',
+        default=PathJoinSubstitution([FindPackageShare('xarm_moveit_config'), 'srdf', 'xarm.srdf.xacro']))
+    xarm_type_arg = LaunchConfiguration('xarm_type', default='')
+
     ros2_control_plugin = 'uf_robot_hardware/UFRobotFakeSystemHardware'
     controllers_name = 'fake_controllers'
     moveit_controller_manager_key = 'moveit_simple_controller_manager'
     moveit_controller_manager_value = 'moveit_simple_controller_manager/MoveItSimpleControllerManager'
-    xarm_type = '{}{}'.format(robot_type.perform(context), dof.perform(context))
+    xarm_type = xarm_type_arg.perform(context)
+    if not xarm_type:
+        xarm_type = '{}{}'.format(robot_type.perform(context), dof.perform(context))
     ros_namespace = LaunchConfiguration('ros_namespace', default='').perform(context)
     
     # robot description launch
@@ -74,6 +83,7 @@ def launch_setup(context, *args, **kwargs):
             'geometry_mesh_origin_rpy': geometry_mesh_origin_rpy,
             'geometry_mesh_tcp_xyz': geometry_mesh_tcp_xyz,
             'geometry_mesh_tcp_rpy': geometry_mesh_tcp_rpy,
+            'xacro_file': xacro_file,
         }.items(),
     )
 
@@ -109,6 +119,9 @@ def launch_setup(context, *args, **kwargs):
             'geometry_mesh_origin_rpy': geometry_mesh_origin_rpy,
             'geometry_mesh_tcp_xyz': geometry_mesh_tcp_xyz,
             'geometry_mesh_tcp_rpy': geometry_mesh_tcp_rpy,
+            'xacro_urdf_file': xacro_urdf_file,
+            'xacro_srdf_file': xacro_srdf_file,
+            'xarm_type': xarm_type,
         }.items(),
     )
 
@@ -158,6 +171,7 @@ def launch_setup(context, *args, **kwargs):
             'geometry_mesh_origin_rpy': geometry_mesh_origin_rpy,
             'geometry_mesh_tcp_xyz': geometry_mesh_tcp_xyz,
             'geometry_mesh_tcp_rpy': geometry_mesh_tcp_rpy,
+            'xacro_file': xacro_file,
         }.items(),
     )
 

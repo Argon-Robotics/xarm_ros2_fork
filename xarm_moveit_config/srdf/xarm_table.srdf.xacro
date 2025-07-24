@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="xarm_table">
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="add_gripper" default="false"/>
+  <xacro:arg name="add_vacuum_gripper" default="false" />
+  <xacro:arg name="add_other_geometry" default="false" />
+
+  <xacro:include filename="$(find xarm_moveit_config)/srdf/_xarm6_table_macro.srdf.xacro" />
+  <xacro:xarm6_table_macro_srdf prefix="$(arg prefix)" add_gripper="$(arg add_gripper)" add_vacuum_gripper="$(arg add_vacuum_gripper)" add_other_geometry="$(arg add_other_geometry)"/>
+</robot>
