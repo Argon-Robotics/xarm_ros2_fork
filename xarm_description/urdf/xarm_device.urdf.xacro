@@ -56,7 +56,7 @@
   <xacro:property name="rot_base_height" value="0.18"/>
   <xacro:property name="rot_plate_radius" value="0.20"/>
   <xacro:property name="rot_plate_height" value="0.18"/>
-  <xacro:property name="rot_origin_xyz" value="0 0.5 0"/>  <!-- position in world -->
+  <xacro:property name="rot_origin_xyz" value="0.4915 -0.238 0"/>  <!-- position in world -->
 
   <!-- ‣‣‣ xArm include (unchanged) -->
   <xacro:include filename="$(find xarm_description)/urdf/xarm_device_macro.xacro" />
