@@ -1,9 +1,8 @@
-<robot name="xarm6_with_rotary_table" xmlns="http://www.ros.org/schema/srdf" version="1.0">
+<robot name="XARM_WITH_ROTARY" xmlns="http://www.ros.org/schema/srdf" version="1.0">
 
   <!-- The full planning group -->
   <group name="xarm_with_rotary">
-    <chain base_link="link_base" tip_link="link_eef"/>
-    <joint name="rotary_table_joint"/>
+    <chain base_link="rotary_stand" tip_link="link_eef"/>
   </group>
 
   <!-- For legacy compatibility, original xarm6 group -->
@@ -15,7 +14,7 @@
   <end_effector name="xarm_gripper" parent_link="link_eef" group="xarm6"/>
 
   <!-- Virtual joints -->
-  <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="link_base"/>
+  <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="rotary_stand"/>
 
   <!-- Disable collision checking for adjacent links -->
   <disable_collisions link1="link_base" link2="link1" reason="Adjacent"/>

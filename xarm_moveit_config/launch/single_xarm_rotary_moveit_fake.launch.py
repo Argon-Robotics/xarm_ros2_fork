@@ -22,6 +22,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
+from pathlib import Path
 
 from uf_ros_lib.moveit_configs_builder import MoveItConfigsBuilder
 from uf_ros_lib.uf_robot_utils import generate_ros2_control_params_temp_file
@@ -117,8 +118,9 @@ def launch_setup(context, *args, **kwargs):
         geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
     )
 
-    moveit_builder.robot_description(
-        file_path='urdf/single_xarm_with_rotary.urdf.xacro')
+    # Use the rotary-table URDF residing in the xarm_description package
+    moveit_builder._MoveItConfigsBuilder__urdf_file_path = Path('urdf/single_xarm_with_rotary.urdf.xacro')
+    moveit_builder.robot_description()
     moveit_builder.robot_description_semantic(
         file_path='srdf/xarm_with_rotary_table.srdf')
 
