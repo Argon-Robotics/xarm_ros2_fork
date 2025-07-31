@@ -83,7 +83,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # ───────────────── MoveIt config ──────────────────────
-    moveit_config = MoveItConfigsBuilder(
+    moveit_builder = MoveItConfigsBuilder(
         context=context,
         controllers_name=controllers_name,
         dof=dof,
@@ -115,7 +115,14 @@ def launch_setup(context, *args, **kwargs):
         geometry_mesh_origin_rpy=geometry_mesh_origin_rpy,
         geometry_mesh_tcp_xyz=geometry_mesh_tcp_xyz,
         geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
-    ).to_moveit_configs()
+    )
+
+    moveit_builder.robot_description(
+        file_path='urdf/single_xarm_with_rotary.urdf.xacro')
+    moveit_builder.robot_description_semantic(
+        file_path='srdf/xarm_with_rotary_table.srdf')
+
+    moveit_config = moveit_builder.to_moveit_configs()
 
     # ───────────────── nodes & includes ───────────────────
     # One static transform publisher so downstream common-launch files
