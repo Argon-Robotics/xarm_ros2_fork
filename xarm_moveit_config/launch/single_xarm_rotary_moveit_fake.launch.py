@@ -142,16 +142,16 @@ def launch_setup(context, *args, **kwargs):
     import builtins as _bt
     _bt.static_tf = static_tf
 
-    # robot_state_publisher_node = Node(
-    #     package='robot_state_publisher',
-    #     executable='robot_state_publisher',
-    #     output='screen',
-    #     parameters=[moveit_config.robot_description],
-    #     remappings=[
-    #         ('/tf', 'tf'),
-    #         ('/tf_static', 'tf_static'),
-    #     ]
-    # )
+    robot_state_publisher_node = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        output='screen',
+        parameters=[moveit_config.robot_description],
+        remappings=[
+            ('/tf', 'tf'),
+            ('/tf_static', 'tf_static'),
+        ]
+    )
 
     robot_moveit_common_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([
@@ -205,7 +205,7 @@ def launch_setup(context, *args, **kwargs):
         # ───────────────── launch description list ────────────
     return [
         static_tf,
-        # robot_state_publisher_node,
+        robot_state_publisher_node,
         robot_moveit_common_launch,
         joint_state_broadcaster,
         ros2_control_launch,

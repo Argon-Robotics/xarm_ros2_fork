@@ -3,7 +3,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="rotary_table">
   <link name="world"/>
 
-  <link name="rotary_stand">
+  <link name="rotary_table_base">
     <visual>
       <origin xyz="-0.200 0.200 0" rpy="1.5708 0 0"/>
       <geometry>
@@ -35,12 +35,12 @@
 
   <joint name="world_to_rotary_stand" type="fixed">
     <parent link="world"/>
-    <child link="rotary_stand"/>
+    <child link="rotary_table_base"/>
     <origin xyz="0.4915 -0.238 0" rpy="0 0 0"/>
   </joint>
 
   <joint name="rotary_table_joint" type="revolute">
-    <parent link="rotary_stand"/>
+    <parent link="rotary_table_base"/>
     <child link="rotary_plate"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>

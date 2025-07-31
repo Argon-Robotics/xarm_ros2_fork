@@ -66,10 +66,10 @@
     model1300="$(arg model1300)" robot_sn="$(arg robot_sn)"
     mesh_suffix="$(arg mesh_suffix)" kinematics_suffix="$(arg kinematics_suffix)" />
 
-  <joint name="world_to_rotary_stand" type="fixed">
+  <!-- <joint name="world_to_rotary_stand" type="fixed">
     <parent link="world"/>
     <child link="rotary_stand"/>
     <origin xyz="0 0.5 0" rpy="0 0 0"/>
-  </joint>
+  </joint> -->
 </robot>
 
