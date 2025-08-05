@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="rotary_table">
+  <link name="world"/>
+
+  <link name="rotary_table_base">
+    <visual>
+      <origin xyz="0.4915 -0.238 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://xarm_moveit_config/meshes/rotary_stand_m.STL" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.4915 -0.238 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://xarm_moveit_config/meshes/rotary_stand_m.STL" scale="1 1 1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="rotary_plate">
+    <visual>
+      <origin xyz="0.4915 -0.238 0.18" rpy="1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://xarm_moveit_config/meshes/RotaryPlate_m.STL" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.4915 -0.238 0.18" rpy="1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://xarm_moveit_config/meshes/RotaryPlate_m.STL" scale="1 1 1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="world_to_rotary_stand" type="fixed">
+    <parent link="world"/>
+    <child link="rotary_table_base"/>
+    <origin xyz="0.4915 -0.238 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="rotary_table_joint" type="revolute">
+    <parent link="rotary_table_base"/>
+    <child link="rotary_plate"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
+  </joint>
+
+
+  <transmission name="rotary_table_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rotary_table_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rotary_table_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1.0</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+  <ros2_control name="RotaryTableHW" type="system">
+    <hardware>
+      <plugin>mock_components/GenericSystem</plugin>
+      <param name="example_param_hw_start_duration">0.0</param>
+      <param name="example_param_hw_stop_duration">0.0</param>
+      <param name="example_param_hw_slowdown">1.0</param>
+    </hardware>
+
+    <joint name="rotary_table_joint">
+      <state_interface name="position"/>
+      <command_interface name="position"/>
+    </joint>
+  </ros2_control>
+
+</robot>

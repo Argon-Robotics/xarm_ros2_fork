@@ -38,6 +38,7 @@ install(DIRECTORY
   srdf
   launch
   meshes
+  urdf
   DESTINATION share/${PROJECT_NAME}/
 )
 

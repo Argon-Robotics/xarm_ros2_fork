@@ -117,8 +117,8 @@ def launch_setup(context, *args, **kwargs):
         geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
     )
 
-    moveit_builder.robot_description(
-        file_path='urdf/single_xarm_with_rotary.urdf.xacro')
+    # moveit_builder.robot_description(
+    #     file_path='urdf/xarm_device.urdf.xacro')
     moveit_builder.robot_description_semantic(
         file_path='srdf/xarm_with_rotary_table.srdf')
 

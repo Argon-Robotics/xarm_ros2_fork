@@ -39,7 +39,7 @@ def launch_setup(context, *args, **kwargs):
     # Basic kinematic configuration of the arm.  ``robot_ip`` is the only
     # mandatory argument when connecting to real hardware; everything else has
     # sane defaults matching the fake launch file.
-    robot_ip         = LaunchConfiguration('robot_ip')
+    robot_ip         = LaunchConfiguration('robot_ip', default="192.168.68.236")
     report_type      = LaunchConfiguration('report_type',      default='normal')
     baud_checkset    = LaunchConfiguration('baud_checkset',    default=True)
     default_gripper_baud = LaunchConfiguration('default_gripper_baud', default=2000000)
@@ -138,8 +138,8 @@ def launch_setup(context, *args, **kwargs):
         geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
     )
 
-    moveit_builder.robot_description(
-        file_path='urdf/single_xarm_with_rotary.urdf.xacro')
+    # moveit_builder.robot_description(
+    #     file_path='urdf/single_xarm_with_rotary.urdf.xacro')
     moveit_builder.robot_description_semantic(
         file_path='srdf/xarm_with_rotary_table.srdf')
 
