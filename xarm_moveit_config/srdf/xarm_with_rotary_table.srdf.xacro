@@ -1,4 +1,6 @@
-<robot name="xarm6_with_rotary_table" xmlns="http://www.ros.org/schema/srdf" version="1.0">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot name="XARM_WITH_ROTARY" xmlns="http://www.ros.org/schema/srdf" version="1.0">
 
   <!-- The full planning group -->
   <group name="xarm_with_rotary">

@@ -140,8 +140,8 @@ def launch_setup(context, *args, **kwargs):
 
     # moveit_builder.robot_description(
     #     file_path='urdf/single_xarm_with_rotary.urdf.xacro')
-    moveit_builder.robot_description_semantic(
-        file_path='srdf/xarm_with_rotary_table.srdf')
+    # moveit_builder.robot_description_semantic(
+    #     file_path='srdf/xarm_with_rotary_table.srdf.xacro')
 
     moveit_config = moveit_builder.to_moveit_configs()
 
