@@ -75,6 +75,8 @@ def launch_setup(context, *args, **kwargs):
     geometry_mesh_tcp_xyz     = LaunchConfiguration('geometry_mesh_tcp_xyz',     default='"0 0 0"')
     geometry_mesh_tcp_rpy     = LaunchConfiguration('geometry_mesh_tcp_rpy',     default='"0 0 0"')
 
+    add_walls = LaunchConfiguration('add_walls', default=False)
+
     # ───────────────── misc ───────────────────────────────
     no_gui_ctrl   = LaunchConfiguration('no_gui_ctrl', default=False)
     ros_namespace = LaunchConfiguration('ros_namespace', default='').perform(context)
@@ -136,6 +138,7 @@ def launch_setup(context, *args, **kwargs):
         geometry_mesh_origin_rpy=geometry_mesh_origin_rpy,
         geometry_mesh_tcp_xyz=geometry_mesh_tcp_xyz,
         geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
+        add_walls=add_walls,
     )
 
     # moveit_builder.robot_description(
@@ -191,7 +194,8 @@ def launch_setup(context, *args, **kwargs):
         ])),
         launch_arguments={
             'robot_description': yaml.dump(moveit_config.robot_description),
-            'ros2_control_params': ros2_control_params
+            'ros2_control_params': ros2_control_params,
+            'add_walls': add_walls
             # 'xacro_file': LaunchConfiguration('xacro_file', default=PathJoinSubstitution([FindPackageShare('xarm_description'), 'urdf', 'xarm_device_with_table.urdf.xacro']))
         }.items(),
     )

@@ -57,6 +57,7 @@ def launch_setup(context, *args, **kwargs):
     geometry_mesh_origin_rpy = LaunchConfiguration('geometry_mesh_origin_rpy', default='"0 0 0"')
     geometry_mesh_tcp_xyz = LaunchConfiguration('geometry_mesh_tcp_xyz', default='"0 0 0"')
     geometry_mesh_tcp_rpy = LaunchConfiguration('geometry_mesh_tcp_rpy', default='"0 0 0"')
+    add_walls = LaunchConfiguration('add_walls', default=False)
 
     kinematics_suffix = LaunchConfiguration('kinematics_suffix', default='')
     
@@ -115,6 +116,7 @@ def launch_setup(context, *args, **kwargs):
                 geometry_mesh_origin_rpy=geometry_mesh_origin_rpy,
                 geometry_mesh_tcp_xyz=geometry_mesh_tcp_xyz,
                 geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
+                add_walls=add_walls,
             )
         }
     else:
