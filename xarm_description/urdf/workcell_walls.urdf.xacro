@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="workcell_walls">
+  <xacro:macro name="workcell_walls" params="prefix:=''">
+    <link name="${prefix}floor">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.91 0.61 0.005"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.5 0.5 0.5 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.91 0.61 0.005"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}back_wall">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.51 0.005 1.5"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.8 0.8 0.8 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.51 0.005 1.5"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}left_wall">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.005 1.51 1.5"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.8 0.8 0.8 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.005 1.51 1.5"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}right_wall">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.005 1.51 1.5"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.8 0.8 0.8 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.005 1.51 1.5"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+</robot>

@@ -42,6 +42,8 @@
   <xacro:arg name="geometry_mesh_tcp_xyz" default="0 0 0"/>
   <xacro:arg name="geometry_mesh_tcp_rpy" default="0 0 0"/>
 
+  <xacro:arg name="add_walls" default="false"/>
+
   <xacro:arg name="baud_checkset" default="true"/>
   <xacro:arg name="default_gripper_baud" default="2000000"/>
 
@@ -60,6 +62,7 @@
 
   <!-- ‣‣‣ xArm include (unchanged) -->
   <xacro:include filename="$(find xarm_description)/urdf/xarm_device_macro.xacro" />
+  <xacro:include filename="$(find xarm_description)/urdf/workcell_walls.urdf.xacro" />
   <xacro:xarm_device prefix="$(arg prefix)" hw_ns="$(arg hw_ns)" limited="$(arg limited)"
     effort_control="$(arg effort_control)" velocity_control="$(arg velocity_control)"
     add_gripper="$(arg add_gripper)" add_vacuum_gripper="$(arg add_vacuum_gripper)"
@@ -147,6 +150,30 @@
     <axis xyz="0 0 1"/>
     <limit lower="-3.14159" upper="3.14159" effort="20" velocity="1.5"/>
   </joint>
+
+  <xacro:if value="${add_walls}">
+    <xacro:workcell_walls/>
+    <joint name="floor_joint" type="fixed">
+      <parent link="world"/>
+      <child  link="floor"/>
+      <origin xyz="0.355 -0.205 -0.0025" rpy="0 0 0"/>
+    </joint>
+    <joint name="back_wall_joint" type="fixed">
+      <parent link="world"/>
+      <child  link="back_wall"/>
+      <origin xyz="0.3825 0.5425 0.75" rpy="0 0 0"/>
+    </joint>
+    <joint name="left_wall_joint" type="fixed">
+      <parent link="world"/>
+      <child  link="left_wall"/>
+      <origin xyz="-0.4225 -0.2125 0.75" rpy="0 0 0"/>
+    </joint>
+    <joint name="right_wall_joint" type="fixed">
+      <parent link="world"/>
+      <child  link="right_wall"/>
+      <origin xyz="1.3375 -0.2125 0.75" rpy="0 0 0"/>
+    </joint>
+  </xacro:if>
 
   <!-- ros2_control specification for the rotary joint (fake hardware) -->
   <ros2_control name="RotaryTableHW" type="system">
