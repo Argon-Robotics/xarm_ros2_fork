@@ -33,6 +33,7 @@
   <xacro:arg name="geometry_mesh_origin_rpy" default="0 0 0"/>
   <xacro:arg name="geometry_mesh_tcp_xyz" default="0 0 0"/>
   <xacro:arg name="geometry_mesh_tcp_rpy" default="0 0 0"/>
+  <xacro:arg name="add_walls" default="true"/>
 
   <xacro:arg name="baud_checkset" default="true"/>
   <xacro:arg name="default_gripper_baud" default="2000000"/>
@@ -40,16 +41,28 @@
   <xacro:arg name="mesh_suffix" default="stl"/>
   <xacro:arg name="kinematics_suffix" default=""/>
 
+  <xacro:arg name="attach_to" default="xarm_base"/>
+  <xacro:arg name="attach_xyz" default="0 0 0"/>
+  <xacro:arg name="attach_rpy" default="0 0 0"/>
+
+
+
+
+
+  <!-- <xacro:include filename="$(find xarm_description)/urdf/workcell_walls.urdf.xacro" /> -->
+  <xacro:include filename="$(find xarm_description)/urdf/cobot_environment_macro.xacro" />
+
   <xacro:include filename="$(find xarm_description)/urdf/xarm_device_macro.xacro"/>
   <xacro:include filename="$(find xarm_description)/urdf/rotary_table.urdf.xacro"/>
 
+  <xacro:cobot_environment add_walls="$(arg add_walls)" />
   <xacro:xarm_device prefix="" hw_ns="$(arg hw_ns)" limited="$(arg limited)"
     effort_control="$(arg effort_control)" velocity_control="$(arg velocity_control)"
     add_gripper="$(arg add_gripper)" add_vacuum_gripper="$(arg add_vacuum_gripper)"
     add_bio_gripper="$(arg add_bio_gripper)" dof="$(arg dof)"
     ros2_control_plugin="$(arg ros2_control_plugin)" robot_type="$(arg robot_type)"
     load_gazebo_plugin="false" ros2_control_params="$(arg ros2_control_params)"
-    attach_to="rotary_plate" attach_xyz="0 0 0" attach_rpy="0 0 0"
+
     add_realsense_d435i="$(arg add_realsense_d435i)"
     add_d435i_links="$(arg add_d435i_links)"
     add_other_geometry="$(arg add_other_geometry)"
@@ -64,12 +77,8 @@
     robot_ip="$(arg robot_ip)" report_type="$(arg report_type)"
     baud_checkset="$(arg baud_checkset)" default_gripper_baud="$(arg default_gripper_baud)"
     model1300="$(arg model1300)" robot_sn="$(arg robot_sn)"
-    mesh_suffix="$(arg mesh_suffix)" kinematics_suffix="$(arg kinematics_suffix)" />
+    mesh_suffix="$(arg mesh_suffix)" kinematics_suffix="$(arg kinematics_suffix)"
+    attach_to="$(arg attach_to)" attach_xyz="$(arg attach_xyz)" attach_rpy="$(arg attach_rpy)"/>
 
-  <!-- <joint name="world_to_rotary_stand" type="fixed">
-    <parent link="world"/>
-    <child link="rotary_stand"/>
-    <origin xyz="0 0.5 0" rpy="0 0 0"/>
-  </joint> -->
-</robot>
+ </robot>
 

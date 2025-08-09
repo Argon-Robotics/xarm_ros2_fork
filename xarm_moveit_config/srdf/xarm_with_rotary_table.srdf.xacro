@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<robot name="XARM_WITH_ROTARY" xmlns="http://www.ros.org/schema/srdf" version="1.0">
+
+<robot
+  name="XARM_WITH_ROTARY"
+  xmlns="http://www.ros.org/schema/srdf"
+  xmlns:xacro="http://www.ros.org/wiki/xacro"
+  version="1.0">
+
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="dof" default="7" />
+  <xacro:arg name="robot_type" default="xarm" />
+  <xacro:arg name="add_gripper" default="false"/>
+  <xacro:arg name="add_vacuum_gripper" default="false" />
+  <xacro:arg name="add_bio_gripper" default="false" />
+  <xacro:arg name="add_other_geometry" default="false" />
+
+  <xacro:include filename="$(find xarm_moveit_config)/srdf/xarm_macro.srdf.xacro" />
+  <xacro:xarm_macro_srdf prefix="$(arg prefix)" dof="$(arg dof)" robot_type="$(arg robot_type)" 
+    add_gripper="$(arg add_gripper)" add_vacuum_gripper="$(arg add_vacuum_gripper)" add_bio_gripper="$(arg add_bio_gripper)" add_other_geometry="$(arg add_other_geometry)" />
+
 
   <!-- The full planning group -->
   <group name="xarm_with_rotary">
@@ -8,25 +26,17 @@
     <joint name="rotary_table_joint"/>
   </group>
 
-  <!-- For legacy compatibility, original xarm6 group -->
-  <group name="xarm6">
-    <chain base_link="link_base" tip_link="link_eef"/>
-  </group>
-
-  <!-- End effector -->
-  <end_effector name="xarm_gripper" parent_link="link_eef" group="xarm6"/>
 
   <!-- Virtual joints -->
-  <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="link_base"/>
+  <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="xarm_base"/>
 
-  <!-- Disable collision checking for adjacent links -->
-  <disable_collisions link1="link_base" link2="link1" reason="Adjacent"/>
-  <disable_collisions link1="link1" link2="link2" reason="Adjacent"/>
-  <disable_collisions link1="link2" link2="link3" reason="Adjacent"/>
-  <disable_collisions link1="link3" link2="link4" reason="Adjacent"/>
-  <disable_collisions link1="link4" link2="link5" reason="Adjacent"/>
-  <disable_collisions link1="link5" link2="link6" reason="Adjacent"/>
-  <disable_collisions link1="link6" link2="link_eef" reason="Adjacent"/>
-  <disable_collisions link1="rotary_table_base" link2="rotary_plate" reason="Adjacent"/>
+
+  <disable_collisions link1="rotary_table_base" link2="rotary_table_plate" reason="Adjacent"/>
+  <disable_collisions link1="rotary_table_base" link2="floor" reason="Adjacent"/>
+  <disable_collisions link1="xarm_base" link2="floor" reason="Adjacent"/>
+  <disable_collisions link1="xarm_base" link2="$(arg prefix)link_base" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link1" link2="xarm_base" reason="Never"/>
+  <disable_collisions link1="$(arg prefix)link_base" link2="floor" reason="Never"/>
+  <disable_collisions link1="$(arg prefix)link1" link2="floor" reason="Never"/>
 
 </robot>

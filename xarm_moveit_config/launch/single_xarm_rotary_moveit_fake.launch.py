@@ -48,23 +48,27 @@ def launch_setup(context, *args, **kwargs):
     add_bio_gripper     = LaunchConfiguration('add_bio_gripper',     default=False)
     add_realsense_d435i = LaunchConfiguration('add_realsense_d435i', default=False)
     add_d435i_links     = LaunchConfiguration('add_d435i_links',     default=True)
-    add_other_geometry  = LaunchConfiguration('add_other_geometry',  default=False)
+    add_other_geometry  = LaunchConfiguration('add_other_geometry',  default=True)
 
-    geometry_type             = LaunchConfiguration('geometry_type',             default='box')
+    geometry_type             = LaunchConfiguration('geometry_type',             default='mesh')
     geometry_mass             = LaunchConfiguration('geometry_mass',             default=0.1)
     geometry_height           = LaunchConfiguration('geometry_height',           default=0.1)
     geometry_radius           = LaunchConfiguration('geometry_radius',           default=0.1)
     geometry_length           = LaunchConfiguration('geometry_length',           default=0.1)
     geometry_width            = LaunchConfiguration('geometry_width',            default=0.1)
-    geometry_mesh_filename    = LaunchConfiguration('geometry_mesh_filename',    default='')
-    geometry_mesh_origin_xyz  = LaunchConfiguration('geometry_mesh_origin_xyz',  default='"0 0 0"')
-    geometry_mesh_origin_rpy  = LaunchConfiguration('geometry_mesh_origin_rpy',  default='"0 0 0"')
-    geometry_mesh_tcp_xyz     = LaunchConfiguration('geometry_mesh_tcp_xyz',     default='"0 0 0"')
+    geometry_mesh_filename    = LaunchConfiguration('geometry_mesh_filename',    default='weld_assy_new_gooseneck.stl')
+    geometry_mesh_origin_xyz  = LaunchConfiguration('geometry_mesh_origin_xyz',  default='"0 0 -0.02"')
+    geometry_mesh_origin_rpy  = LaunchConfiguration('geometry_mesh_origin_rpy',  default='"1.5708 0 -1.5708"')
+    geometry_mesh_tcp_xyz     = LaunchConfiguration('geometry_mesh_tcp_xyz',     default='"0 0 0.371"')
     geometry_mesh_tcp_rpy     = LaunchConfiguration('geometry_mesh_tcp_rpy',     default='"0 0 0"')
 
     # ───────────────── misc ───────────────────────────────
     no_gui_ctrl   = LaunchConfiguration('no_gui_ctrl', default=False)
     ros_namespace = LaunchConfiguration('ros_namespace', default='').perform(context)
+    add_walls = LaunchConfiguration('add_walls', default='true')
+    attach_to = LaunchConfiguration('attach_to', default='xarm_base')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='0 0 0')
+    attach_rpy = LaunchConfiguration('attach_rpy', default='0 0 0')
 
     # Use fake‑hardware so we can plan & execute in RViz
     ros2_control_plugin = 'uf_robot_hardware/UFRobotFakeSystemHardware'
@@ -115,32 +119,42 @@ def launch_setup(context, *args, **kwargs):
         geometry_mesh_origin_rpy=geometry_mesh_origin_rpy,
         geometry_mesh_tcp_xyz=geometry_mesh_tcp_xyz,
         geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
+        add_walls=add_walls,
+        attach_to=attach_to,
+        attach_xyz=attach_xyz,
+        attach_rpy=attach_rpy,
     )
 
-    # moveit_builder.robot_description(
-    #     file_path='urdf/xarm_device.urdf.xacro')
-    moveit_builder.robot_description_semantic(
-        file_path='srdf/xarm_with_rotary_table.srdf')
+
+    print(f"ADD WALLS PARAM IS: {add_walls.perform(context)}")
+    urdf_pkg = get_package_share_directory('xarm_description')
+    srdf_pkg = get_package_share_directory('xarm_moveit_config')
+
+
+    custom_urdf = LaunchConfiguration('urdf_file', default=os.path.join(
+        urdf_pkg, 'urdf', 'single_xarm_with_rotary.urdf.xacro')).perform(context)
+
+    custom_srdf = LaunchConfiguration('srdf_file', default=os.path.join(
+        srdf_pkg, 'srdf', 'xarm_with_rotary_table.srdf.xacro')).perform(context)
+    
+    # Copy the existing default args from the builder
+    merged_mappings = dict(moveit_builder._MoveItConfigsBuilder__urdf_xacro_args)
+    merged_mappings['add_walls'] = 'true' if add_walls.perform(context) in ('True','true','1', True) else 'false'
+    merged_mappings['attach_to'] = attach_to.perform(context)
+    merged_mappings['attach_xyz'] = attach_xyz.perform(context)
+    merged_mappings['attach_rpy'] = attach_rpy.perform(context)
+
+
+
+
+    moveit_builder.robot_description(file_path=custom_urdf, mappings=merged_mappings)
+    moveit_builder.robot_description_semantic(file_path=custom_srdf, mappings=merged_mappings)
 
     moveit_config = moveit_builder.to_moveit_configs()
 
-    # ───────────────── nodes & includes ───────────────────
-    # One static transform publisher so downstream common-launch files
-    # can include it by the expected variable name `static_tf`.
-    # The identity transform keeps TF tree simple; adjust if your setup
-    # needs an offset between `world` and any other frame.
-    static_tf = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='world_static_tf',
-        arguments=['0', '0', '0', '0', '0', '0', 'world', 'rotary_table_base'],
-        output='log',
-    )
 
-    # Make it accessible to any included launch file that naïvely
-    # references a global ``static_tf`` symbol without defining it.
-    import builtins as _bt
-    _bt.static_tf = static_tf
+
+
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
@@ -204,7 +218,7 @@ def launch_setup(context, *args, **kwargs):
     # ───────────────── launch description list ────────────
         # ───────────────── launch description list ────────────
     return [
-        static_tf,
+
         robot_state_publisher_node,
         robot_moveit_common_launch,
         joint_state_broadcaster,

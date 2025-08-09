@@ -1,7 +1,33 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="workcell_walls">
-  <xacro:macro name="workcell_walls" params="prefix:=''">
-    <link name="${prefix}floor">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="workcell_static">
+  <xacro:macro name="workcell_static">
+
+<link name="world" />
+
+<link name="xarm_base">
+    <visual>
+      <origin xyz="0 0 -0.008" rpy="-3.14 0 -3.14"/>
+      <geometry>
+        <mesh filename="package://xarm_description/meshes/other/robot_base_m.STL" />
+      </geometry>
+      <material name="RotaryGrey">
+        <color rgba="0.6 0.6 0.6 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.008" rpy="-3.14 0 -3.14"/>
+      <geometry>
+        <mesh filename="package://xarm_description/meshes/other/robot_base_m.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 -0.008" rpy="-3.14 0 -3.14"/>
+      <mass value="5.0"/>
+      <inertia ixx="0.1" iyy="0.1" izz="0.1" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+    <link name="floor">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
@@ -19,7 +45,7 @@
       </collision>
     </link>
 
-    <link name="${prefix}back_wall">
+    <link name="back_wall">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
@@ -37,7 +63,7 @@
       </collision>
     </link>
 
-    <link name="${prefix}left_wall">
+    <link name="left_wall">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
@@ -55,7 +81,7 @@
       </collision>
     </link>
 
-    <link name="${prefix}right_wall">
+    <link name="right_wall">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
