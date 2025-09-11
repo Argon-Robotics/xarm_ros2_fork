@@ -22,7 +22,7 @@ def launch_setup(context, *args, **kwargs):
     velocity_control = LaunchConfiguration('velocity_control', default=False)
     add_gripper = LaunchConfiguration('add_gripper', default=False)
     add_vacuum_gripper = LaunchConfiguration('add_vacuum_gripper', default=False)
-    dof = LaunchConfiguration('dof')
+    dof = '6'#LaunchConfiguration('dof')
     robot_type = LaunchConfiguration('robot_type', default='xarm')
 
     node_executable = 'test_dual_xarm_planner_api_joint'

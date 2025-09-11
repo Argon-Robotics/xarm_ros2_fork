@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<robot
+  name="XARM_WITH_ROTARY"
+  xmlns="http://www.ros.org/schema/srdf"
+  xmlns:xacro="http://www.ros.org/wiki/xacro"
+  version="1.0">
+
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="dof" default="7" />
+  <xacro:arg name="robot_type" default="xarm" />
+  <xacro:arg name="add_gripper" default="false"/>
+  <xacro:arg name="add_vacuum_gripper" default="false" />
+  <xacro:arg name="add_bio_gripper" default="false" />
+  <xacro:arg name="add_other_geometry" default="false" />
+
+  <xacro:include filename="$(find xarm_moveit_config)/srdf/xarm_macro.srdf.xacro" />
+  <xacro:xarm_macro_srdf prefix="$(arg prefix)" dof="$(arg dof)" robot_type="$(arg robot_type)" 
+    add_gripper="$(arg add_gripper)" add_vacuum_gripper="$(arg add_vacuum_gripper)" add_bio_gripper="$(arg add_bio_gripper)" add_other_geometry="$(arg add_other_geometry)" />
+
+
+  <!-- The full planning group -->
+  <group name="xarm_with_rotary">
+    <chain base_link="link_base" tip_link="link_eef"/>
+    <joint name="rotary_table_joint"/>
+  </group>
+
+
+  <!-- Virtual joints -->
+  <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="xarm_base"/>
+
+
+  <disable_collisions link1="rotary_table_base" link2="rotary_table_plate" reason="Adjacent"/>
+  <disable_collisions link1="rotary_table_base" link2="floor" reason="Adjacent"/>
+  <disable_collisions link1="xarm_base" link2="floor" reason="Adjacent"/>
+  <disable_collisions link1="xarm_base" link2="$(arg prefix)link_base" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link1" link2="xarm_base" reason="Never"/>
+  <disable_collisions link1="$(arg prefix)link_base" link2="floor" reason="Never"/>
+  <disable_collisions link1="$(arg prefix)link1" link2="floor" reason="Never"/>
+
+</robot>

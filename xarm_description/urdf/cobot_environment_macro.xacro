@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find xarm_description)/urdf/workcell_static_objects.urdf.xacro" />
+
+    <!-- Macro to add workcell walls and joints -->
+    <xacro:macro name="cobot_environment" params="add_walls:=false">
+        <!-- <xacro:if value="${add_walls == 'true'}"> -->
+        <xacro:if value="${True}">
+            <!-- Include workcell walls (assumes xacro:workcell_walls is defined elsewhere) -->
+            <xacro:workcell_static/>
+
+
+            <!-- xarm_base joint -->
+            <joint name="xarm_base_joint" type="fixed">
+                <parent link="world"/>
+                <child link="xarm_base"/>
+                <origin xyz="0 0 0.308" rpy="0 0 0"/>
+            </joint>
+            
+            <!-- Floor joint -->
+            <joint name="floor_joint" type="fixed">
+                <parent link="world"/>
+                <child link="floor"/>
+                <origin xyz="0.355 -0.205 -0.0025" rpy="0 0 0"/>
+            </joint>
+
+            <!-- Back wall joint -->
+            <joint name="back_wall_joint" type="fixed">
+                <parent link="world"/>
+                <child link="back_wall"/>
+                <origin xyz="0.3825 0.5425 0.75" rpy="0 0 0"/>
+            </joint>
+
+            <!-- Left wall joint -->
+            <joint name="left_wall_joint" type="fixed">
+                <parent link="world"/>
+                <child link="left_wall"/>
+                <origin xyz="-0.4225 -0.2125 0.75" rpy="0 0 0"/>
+            </joint>
+
+            <!-- Right wall joint -->
+            <joint name="right_wall_joint" type="fixed">
+                <parent link="world"/>
+                <child link="right_wall"/>
+                <origin xyz="1.3375 -0.2125 0.75" rpy="0 0 0"/>
+            </joint>
+        </xacro:if>
+    </xacro:macro>
+
+</robot>

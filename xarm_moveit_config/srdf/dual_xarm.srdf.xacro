@@ -16,10 +16,47 @@
   <xacro:arg name="add_other_geometry_1" default="false" />
   <xacro:arg name="add_other_geometry_2" default="false" />
 
+  <!-- Include the per-arm macros -->
   <xacro:include filename="$(find xarm_moveit_config)/srdf/xarm_macro.srdf.xacro" />
+
   <xacro:xarm_macro_srdf prefix="$(arg prefix_1)" dof="$(arg dof_1)" robot_type="$(arg robot_type_1)" 
     add_gripper="$(arg add_gripper_1)" add_vacuum_gripper="$(arg add_vacuum_gripper_1)" add_bio_gripper="$(arg add_bio_gripper_1)" add_other_geometry="$(arg add_other_geometry_1)" />
   <xacro:xarm_macro_srdf prefix="$(arg prefix_2)" dof="$(arg dof_2)" robot_type="$(arg robot_type_2)" 
     add_gripper="$(arg add_gripper_2)" add_vacuum_gripper="$(arg add_vacuum_gripper_2)" add_bio_gripper="$(arg add_bio_gripper_2)" add_other_geometry="$(arg add_other_geometry_2)" />
 
+  <!-- NEW: Add a combined group for both arms -->
+  <!-- <group name="dual_arm">
+    <chain base_link="$(arg prefix_1)link_base" tip_link="$(arg prefix_1)link6" />
+    <chain base_link="$(arg prefix_2)link_base" tip_link="$(arg prefix_2)link6" />
+  </group> -->
+
+  <!-- Optionally, you could be more explicit with joints instead of chain -->
+  
+  <group name="dual_arm">
+    <joint name="$(arg prefix_1)joint1"/>
+    <joint name="$(arg prefix_1)joint2"/>
+    <joint name="$(arg prefix_1)joint3"/>
+    <joint name="$(arg prefix_1)joint4"/>
+    <joint name="$(arg prefix_1)joint5"/>
+    <joint name="$(arg prefix_1)joint6"/>
+    <!-- <joint name="$(arg prefix_1)joint7"/> -->
+    <joint name="$(arg prefix_2)joint1"/>
+    <joint name="$(arg prefix_2)joint2"/>
+    <joint name="$(arg prefix_2)joint3"/>
+    <joint name="$(arg prefix_2)joint4"/>
+    <joint name="$(arg prefix_2)joint5"/>
+    <joint name="$(arg prefix_2)joint6"/>
+    <!-- <joint name="$(arg prefix_2)joint7"/> -->
+  </group>
+
+
+<group name="rotary_table">
+  <joint name="rotary_table_joint"/>
+</group>
+
+<group name="dual_arm_with_table">
+  <group name="dual_arm"/>
+  <group name="rotary_table"/>
+</group>
+ 
 </robot>
